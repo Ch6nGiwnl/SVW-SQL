@@ -42,3 +42,46 @@ FROM ods_ext.hr_sf_job_requisition_nt_hourly
 --WHERE cust_startdate != 'NULL' AND cust_expecteddate != 'NULL'
 --WHERE status != 'NULL'
 ) AS temp
+
+
+--建表
+create table if not exists dw.hr_sf_basic_person_info_ss_hourly
+(
+jobreqid string, --招聘需求识别符
+status string, --状态
+cust_r1code string,--R1部门
+cust_r2code string,--R2部门
+cust_r3code string, --R3部门
+cust_assignment string, --是否外派
+cust_businesstrip string, --是否长期出差
+cust_competitivereq string,--是否有竞业要求
+cust_education string, --学历要求
+cust_expecteddate string, --期望到岗时间
+cust_isrisk string, --是否有岗位危害风险
+cust_jobcodename string, --标准岗位名称
+cust_joblevel string, --职级
+cust_keywords string, --关键词
+cust_major string, --专业要求
+cust_others string, --其他
+cust_positionlevel string, --岗级
+cust_recruitingmethod string, --招聘方式
+cust_worknature string, --工作性质
+cust_workplace string, --工作地点
+cust_workplacedetails string, --详细地址
+externaltitle string, --外部需求名称
+hiringmanager string, --面试官
+jobtitle string, --内部需求名称
+legalentity_obj string, --劳动关系
+numberopenings string, --需求人数
+openingsfilled string, --
+originator string, --部门岗位负责人
+recruiter string, --招聘负责人
+secondrecruiter string, --HRBP
+start_date string, --需求提出时间
+expected_date string, --期望到岗时间
+lead_time int --预计招聘用时
+);
+
+
+
+
