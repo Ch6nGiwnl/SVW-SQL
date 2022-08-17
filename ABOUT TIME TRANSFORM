@@ -1,10 +1,15 @@
-SELECT *, (DATEDIFF(temp.expected_date, temp.start_date)) as 'lead_time'
+SELECT jobreqid, status, 
+cust_r1code, cust_r2code, cust_r3code, cust_assignment, cust_businesstrip, cust_competitivereq, cust_education, 
+cust_expecteddate, cust_isrisk, cust_jobcodename, cust_joblevel, cust_keywords, cust_major, cust_others, 
+cust_positionlevel, cust_recruitingmethod, cust_worknature, cust_workplace, cust_workplacedetails, externaltitle, 
+hiringmanager,  jobtitle, legalentity_obj, numberopenings, openingsfilled, originator, recruiter, secondrecruiter, 
+temp.start_date, temp.expected_date, (DATEDIFF(temp.expected_date, temp.start_date)) as 'lead_time'
 FROM (
 SELECT * , 
 from_unixtime(
-cast(cast(regexp_replace(cust_startdate,'([\/Date\(\)(+)]+)','')as bigint)/1000 as bigint),'yyyy-MM-dd') as start_date,
+cast(cast(regexp_replace(cust_startdate,'([\/Date\(\)(+)]+)','')as bigint)/10000000 as bigint),'yyyy-MM-dd') as start_date,
 from_unixtime(
-cast(cast(regexp_replace(cust_expecteddate,'([\/Date\(\)(+)]+)','')as bigint)/1000 as bigint),'yyyy-MM-dd') as expected_date
+cast(cast(regexp_replace(cust_expecteddate,'([\/Date\(\)(+)]+)','')as bigint)/10000000 as bigint),'yyyy-MM-dd') as expected_date
 FROM hr_sf_job_requisition_nt_hourly
 --WHERE cust_startdate != 'NULL' AND cust_expecteddate != 'NULL'
 --WHERE status != 'NULL'
