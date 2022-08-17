@@ -1,7 +1,11 @@
+SELECT *, (DATEDIFF(temp.expected_date, temp.start_date)) as 'lead_time'
+FROM (
 SELECT * , 
 from_unixtime(
 cast(cast(regexp_replace(cust_startdate,'([\/Date\(\)(+)]+)','')as bigint)/1000 as bigint),'yyyy-MM-dd') as start_date,
 from_unixtime(
 cast(cast(regexp_replace(cust_expecteddate,'([\/Date\(\)(+)]+)','')as bigint)/1000 as bigint),'yyyy-MM-dd') as expected_date
 FROM hr_sf_job_requisition_nt_hourly
-WHERE cust_startdate != 'NULL' AND cust_expecteddate != 'NULL'
+--WHERE cust_startdate != 'NULL' AND cust_expecteddate != 'NULL'
+--WHERE status != 'NULL'
+) AS temp
