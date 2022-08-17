@@ -1,16 +1,44 @@
-SELECT jobreqid, status, 
-cust_r1code, cust_r2code, cust_r3code, cust_assignment, cust_businesstrip, cust_competitivereq, cust_education, 
-cust_expecteddate, cust_isrisk, cust_jobcodename, cust_joblevel, cust_keywords, cust_major, cust_others, 
-cust_positionlevel, cust_recruitingmethod, cust_worknature, cust_workplace, cust_workplacedetails, externaltitle, 
-hiringmanager,  jobtitle, legalentity_obj, numberopenings, openingsfilled, originator, recruiter, secondrecruiter, 
-temp.start_date, temp.expected_date, (DATEDIFF(temp.expected_date, temp.start_date)) as 'lead_time'
+SELECT 
+jobreqid, --招聘需求识别符
+status, --状态
+cust_r1code,--R1部门
+cust_r2code,--R2部门
+cust_r3code, --R3部门
+cust_assignment, --是否外派
+cust_businesstrip, --是否长期出差
+cust_competitivereq,--是否有竞业要求
+cust_education, --学历要求
+cust_expecteddate, --期望到岗时间
+cust_isrisk, --是否有岗位危害风险
+cust_jobcodename, --标准岗位名称
+cust_joblevel,
+cust_keywords,
+cust_major, 
+cust_others, 
+cust_positionlevel,
+cust_recruitingmethod,
+cust_worknature, 
+cust_workplace,
+cust_workplacedetails, 
+externaltitle, 
+hiringmanager,
+jobtitle, 
+legalentity_obj,
+numberopenings, 
+openingsfilled,
+originator, 
+recruiter,
+secondrecruiter, 
+temp.start_date,
+temp.expected_date,
+(DATEDIFF(temp.expected_date, temp.start_date)) as 'lead_time'
 FROM (
 SELECT * , 
 from_unixtime(
 cast(cast(regexp_replace(cust_startdate,'([\/Date\(\)(+)]+)','')as bigint)/10000000 as bigint),'yyyy-MM-dd') as start_date,
 from_unixtime(
 cast(cast(regexp_replace(cust_expecteddate,'([\/Date\(\)(+)]+)','')as bigint)/10000000 as bigint),'yyyy-MM-dd') as expected_date
-FROM hr_sf_job_requisition_nt_hourly
+FROM ods_ext.hr_sf_job_requisition_nt_hourly
 --WHERE cust_startdate != 'NULL' AND cust_expecteddate != 'NULL'
 --WHERE status != 'NULL'
 ) AS temp
