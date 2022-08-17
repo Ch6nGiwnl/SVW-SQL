@@ -42,7 +42,7 @@ FROM ods_ext.hr_sf_job_requisition_nt_hourly
 ) AS temp
 
 --建表
-create table if not exists dw.hr_sf_basic_person_info_ss_hourly
+create table if not exists dw.hr_sf_job_requisition_nt_hourly
 (
 jobreqid string, --招聘需求识别符
 status string, --状态
