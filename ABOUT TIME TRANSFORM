@@ -1,3 +1,4 @@
+--查询
 SELECT 
 jobreqid, --招聘需求识别符
 status, --状态
@@ -8,41 +9,37 @@ cust_assignment, --是否外派
 cust_businesstrip, --是否长期出差
 cust_competitivereq,--是否有竞业要求
 cust_education, --学历要求
-cust_expecteddate, --期望到岗时间
 cust_isrisk, --是否有岗位危害风险
 cust_jobcodename, --标准岗位名称
-cust_joblevel,
-cust_keywords,
-cust_major, 
-cust_others, 
-cust_positionlevel,
-cust_recruitingmethod,
-cust_worknature, 
-cust_workplace,
-cust_workplacedetails, 
-externaltitle, 
-hiringmanager,
-jobtitle, 
-legalentity_obj,
-numberopenings, 
-openingsfilled,
-originator, 
-recruiter,
-secondrecruiter, 
-temp.start_date,
-temp.expected_date,
-(DATEDIFF(temp.expected_date, temp.start_date)) as 'lead_time'
+cust_joblevel, --职级
+cust_keywords, --关键词
+cust_major, --专业要求
+cust_others, --其他
+cust_positionlevel, --岗级
+cust_recruitingmethod, --招聘方式
+cust_worknature, --工作性质
+cust_workplace, --工作地点
+cust_workplacedetails, --详细地址
+externaltitle, --外部需求名称
+hiringmanager, --面试官
+jobtitle, --内部需求名称
+legalentity_obj, --劳动关系
+numberopenings, --需求人数
+openingsfilled, --
+originator, --部门岗位负责人
+recruiter, --招聘负责人
+secondrecruiter, --HRBP
+temp.start_date AS 'start_date', --需求提出时间
+temp.expected_date AS 'expected_date', --期望到岗时间
+DATEDIFF(temp.expected_date, temp.start_date) as 'lead_time' --预计招聘用时
 FROM (
 SELECT * , 
-from_unixtime(
-cast(cast(regexp_replace(cust_startdate,'([\/Date\(\)(+)]+)','')as bigint)/10000000 as bigint),'yyyy-MM-dd') as start_date,
-from_unixtime(
-cast(cast(regexp_replace(cust_expecteddate,'([\/Date\(\)(+)]+)','')as bigint)/10000000 as bigint),'yyyy-MM-dd') as expected_date
+FROM_UNIXTIME(cast(SUBSTR(regexp_replace(cust_startdate,'([\/Date\(\)(+)]+)',''),1,10)  as BIGINT)) AS start_date,
+FROM_UNIXTIME(cast(SUBSTR(regexp_replace(cust_expecteddate,'([\/Date\(\)(+)]+)',''),1,10)  AS BIGINT)) AS expected_date
 FROM ods_ext.hr_sf_job_requisition_nt_hourly
 --WHERE cust_startdate != 'NULL' AND cust_expecteddate != 'NULL'
 --WHERE status != 'NULL'
 ) AS temp
-
 
 --建表
 create table if not exists dw.hr_sf_basic_person_info_ss_hourly
