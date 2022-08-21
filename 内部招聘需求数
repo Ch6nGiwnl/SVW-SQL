@@ -1,0 +1,3 @@
+SELECT CAST('内部招聘' AS STRING) AS '招聘方式', count(*) AS '总数'
+FROM dw.hr_sf_job_requisition_nt_hourly
+WHERE cust_recruitingmethod = 'internalRecruitment'
