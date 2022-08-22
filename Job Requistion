@@ -79,6 +79,21 @@ expected_date string, --期望到岗时间
 lead_time int --预计招聘用时
 );
 
-
-
+--if join
+SELECT temp_1.jobreqid, temp_1.cust_r1code, temp_1.cust_r2code,temp_1.start_date, temp_1.recruiting_method, 
+       PL_worknature.label_zh_cn AS 'work_nature', temp_1.lead_time
+FROM (
+SELECT temp.jobreqid, temp.cust_r1code, temp.cust_r2code, temp.start_date, PL_recruitingmethod.label_zh_cn AS 'recruiting_method', 
+       temp.cust_worknature, DATEDIFF(temp.expected_date, temp.start_date) as 'lead_time'
+FROM (
+SELECT * , 
+FROM_UNIXTIME(cast(SUBSTR(regexp_replace(cust_startdate,'([\/Date\(\)(+)]+)',''),1,10)  as BIGINT)) AS start_date,
+FROM_UNIXTIME(cast(SUBSTR(regexp_replace(cust_expecteddate,'([\/Date\(\)(+)]+)',''),1,10)  AS BIGINT)) AS expected_date
+FROM ods_ext.hr_sf_job_requisition_nt_hourly
+--WHERE status != 'NULL'
+) AS temp
+LEFT JOIN ods_ext.hr_sf_pick_list_valuevnt_hourly AS PL_recruitingmethod
+ON temp.cust_recruitingmethod = PL_recruitingmethod.externalcode) AS temp_1
+LEFT JOIN ods_ext.hr_sf_pick_list_valuevnt_hourly AS PL_worknature
+ON temp_1.cust_worknature = PL_worknature.externalcode
 
