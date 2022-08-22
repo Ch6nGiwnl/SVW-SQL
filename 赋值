@@ -31,3 +31,4 @@ WHEN floor(RAND()*600) BETWEEN 400 AND 500 THEN '5'
 ELSE '6'
 END AS 'new_pw'
 FROM dw.hr_sf_job_requisition_nt_hourly) AS 'temp'
+ORDER BY temp.jobreqid
