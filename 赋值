@@ -1,3 +1,5 @@
+SELECT *
+FROM (
 --对cust_recruitingmethod, cust_workplace随机赋值
 SELECT temp.jobreqid, 
 CASE 
@@ -17,18 +19,18 @@ END AS 'work_place'
 FROM
 (SELECT *,
 CASE 
-WHEN floor(RAND()*400) BETWEEN 0 AND 100 THEN '1'
-WHEN floor(RAND()*400) BETWEEN 100 AND 200 THEN '2'
-WHEN floor(RAND()*400) BETWEEN 200 AND 300 THEN '3'
+WHEN floor(RAND(1)*400) BETWEEN 0 AND 100 THEN '1'
+WHEN floor(RAND(2)*400) BETWEEN 100 AND 200 THEN '2'
+WHEN floor(RAND(3)*400) BETWEEN 200 AND 300 THEN '3'
 ELSE '4'
 END AS 'new_rm',
 CASE 
-WHEN floor(RAND()*600) BETWEEN 0 AND 100 THEN '1'
-WHEN floor(RAND()*600) BETWEEN 100 AND 200 THEN '2'
-WHEN floor(RAND()*600) BETWEEN 200 AND 300 THEN '3'
-WHEN floor(RAND()*600) BETWEEN 300 AND 400 THEN '4'
-WHEN floor(RAND()*600) BETWEEN 400 AND 500 THEN '5'
+WHEN floor(RAND(4)*600) BETWEEN 0 AND 100 THEN '1'
+WHEN floor(RAND(5)*600) BETWEEN 100 AND 200 THEN '2'
+WHEN floor(RAND(6)*600) BETWEEN 200 AND 300 THEN '3'
+WHEN floor(RAND(7)*600) BETWEEN 300 AND 400 THEN '4'
+WHEN floor(RAND(8)*600) BETWEEN 400 AND 500 THEN '5'
 ELSE '6'
 END AS 'new_pw'
-FROM dw.hr_sf_job_requisition_nt_hourly) AS 'temp'
-ORDER BY temp.jobreqid
+FROM dw.hr_sf_job_requisition_nt_hourly) AS temp) AS temp1
+WHERE temp1.recruiting_method = 'internalRecruitment'
